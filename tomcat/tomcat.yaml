@@ -2,77 +2,86 @@
 - name: Installtion of Tomcat on ubuntu machine
   hosts: all
   become: yes
+  vars:
+    java_package_name: openjdk-11-jdk
+    user_name: tomcat
+    group_name: tomcat
+    user_home: /opt/tomcat
+    user_shell: /bin/false
+    tomcat_version: "10.1.9"
+    tomcat_major_version: "10"
+    tomcat_service_name: tomcat.service
   tasks: 
     - name: Installing Java
       ansible.builtin.apt:
-        name: openjdk-11-jdk
+        name: {{java_package_name}}
         update_cache: true
         state: present
     - name: Creating a group
       ansible.builtin.group:
-        name: tomcat
+        name: {{group_name}}
         state: present
     - name: Creating a System User
       ansible.builtin.user:
-        name: tomcat
+        name: {{user_name}}
         create_home: true
-        group: tomcat
-        home: /opt/tomcat
-        shell: /bin/false
+        group: {{group_name}}
+        home: {{user_home}}
+        shell: {{user_shell}}
         state: present                    
     - name: extract tomcat
       ansible.builtin.unarchive:
-        src: https://www-eu.apache.org/dist/tomcat/tomcat-10/v10.1.9/bin/apache-tomcat-10.1.9.tar.gz
-        dest: /opt/tomcat
+        src: "https://www-eu.apache.org/dist/tomcat/tomcat-{{tomcat_major_version}}/v{{tomcat_version}}/bin/apache-tomcat-{{tomcat_version}}.tar.gz"
+        dest: {{user_home}}
         remote_src: yes
     - name: Create a symbolic link
       ansible.builtin.file:
-        src: /opt/tomcat/apache-tomcat-10.1.9
-        dest: /opt/tomcat/latest
-        owner: tomcat
-        group: tomcat
+        src: "{{user_name}}/apache-tomcat-{{tomcat_version}}"
+        dest: "{{user_name}}/latest"
+        owner: {{user_name}}
+        group: {{group_name}}
         state: link
     - name: Change permissions
       ansible.builtin.file:
-        dest: /opt/tomcat
+        dest: {{user_home}}
         recurse: yes
-        owner: tomcat
-        group: tomcat
+        owner: {{user_name}}
+        group: {{group_name}}
         state: directory     
     - name: Adding executible permissions to shell files
-      ansible.builtin.command: sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
+      ansible.builtin.command: "sudo sh -c 'chmod +x {{user_name}}/latest/bin/*.sh'"
     - name: Creating SystemD Unit File
       ansible.builtin.copy:
-        src: tomcat.service
-        dest: /etc/systemd/system/tomcat.service
-        owner: tomcat
-        group: tomcat
+        src: {{tomcat_service_name}}
+        dest: "/etc/systemd/system/{{tomcat_service_name}}"
+        owner: {{user_name}}
+        group: {{group_name}}
     - name: reload deamon and start tomcat
       ansible.builtin.systemd:
-        name: tomcat.service
+        name: {{tomcat_service_name}}
         daemon_reload: yes
         enabled: yes
         state: started
     - name: copy users sml
       ansible.builtin.copy:
         src: tomcat-users.xml
-        dest: /opt/tomcat/latest/conf/tomcat-users.xml
-        owner: tomcat
-        group: tomcat
+        dest: "{{user_name}}/latest/conf/tomcat-users.xml"
+        owner: {{user_name}}
+        group: {{group_name}}
     - name: copy context xml
       ansible.builtin.copy:
         src: context.xml
-        dest: /opt/tomcat/latest/webapps/manager/META-INF/context.xml
-        owner: tomcat
-        group: tomcat
+        dest: "{{user_name}}/latest/webapps/manager/META-INF/context.xml"
+        owner: {{user_name}}
+        group: {{group_name}}
     - name: copy host manager context xml
       ansible.builtin.copy:
         src: hostmanager-context.xml
-        dest: /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
-        owner: tomcat
-        group: tomcat
+        dest: "{{user_name}}/latest/webapps/host-manager/META-INF/context.xml"
+        owner: {{user_name}}
+        group: {{group_name}}
     - name: restart tomcat
       ansible.builtin.systemd:
-        name: tomcat.service
+        name: {{tomcat_service_name}}
         state: restarted
         
