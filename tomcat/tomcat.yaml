@@ -49,7 +49,7 @@
         group: "{{group_name}}"
         state: directory     
     - name: Adding executible permissions to shell files
-      ansible.builtin.command: "sudo sh -c 'chmod +x {{user_name}}/latest/bin/*.sh'"
+      ansible.builtin.command: "sudo sh -c 'chmod +x {{user_home}}/latest/bin/*.sh'"
     - name: Creating SystemD Unit File
       ansible.builtin.copy:
         src: "{{tomcat_service_name}}"
