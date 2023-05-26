@@ -36,8 +36,8 @@
         remote_src: yes
     - name: Create a symbolic link
       ansible.builtin.file:
-        src: "{{user_name}}/apache-tomcat-{{tomcat_version}}"
-        dest: "{{user_name}}/latest"
+        src:  "{{user_home}}/apache-tomcat-{{tomcat_version}}"
+        dest: "{{user_home}}/latest"
         owner: "{{user_name}}"
         group: "{{group_name}}"
         state: link
