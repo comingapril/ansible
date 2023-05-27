@@ -7,3 +7,6 @@ localhost
 
 [centos]
 12
+
+[webservers]
+web[01:10].qt.com
