@@ -4,3 +4,6 @@ localhost
 [ubuntu]
 172.31.16.20
 localhost
+
+[centos]
+12
