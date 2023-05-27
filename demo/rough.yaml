@@ -1,10 +1,8 @@
 ---
 - name: test inventory
   hosts: all
-  vars:
-    name: Naveen
   tasks:
     - name: Print something
       ansible.builtin.debug:
-        msg: "Hello, {{ name }}"
+        msg: Hello
 
