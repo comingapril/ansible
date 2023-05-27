@@ -1,11 +1,1 @@
----
-- name: test inventory
-  hosts: all
-  vars:
-    name: Naveen
-  tasks:
-    - name: Print something
-      ansible.builtin.debug:
-      debug:
-        msg: "Hello, {{ name }}"
-
+172.31.23.17
