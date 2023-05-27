@@ -6,5 +6,6 @@
   tasks:
     - name: Print something
       ansible.builtin.debug:
+      debug:
         msg: "Hello, {{ name }}"
 
