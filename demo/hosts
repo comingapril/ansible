@@ -1,6 +1,3 @@
-172.31.16.20
-localhost
-
 [ubuntu]
 172.31.16.20 name=node1
 localhost name=ACN
@@ -9,4 +6,5 @@ localhost name=ACN
 12    name=node2
 
 [webservers]
-web[01:10].qt.com
+172.31.16.20 name=node1
+12    name=node2
