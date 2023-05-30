@@ -1,5 +1,5 @@
 [appservers]
-172.31.24.10 java_package_name=openjdk-11-jdk
+172.31.29.27 java_package_name=openjdk-11-jdk
 
 [appservers:vars]
 user_name=tomcat
