@@ -19,7 +19,7 @@
         home: "{{user_home}}"
         shell: "{{user_shell}}"
         state: present          
-    - name: get tomcat stsats 
+    - name: get tomcat stats 
       ansible.builtin.stat:
         path: "{{user_home}}/latest/bin/startup.sh"       
         register: tomcat_startup     
