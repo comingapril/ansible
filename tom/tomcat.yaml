@@ -18,12 +18,17 @@
         group: "{{group_name}}"
         home: "{{user_home}}"
         shell: "{{user_shell}}"
-        state: present                    
+        state: present          
+    - name: get tomcat stsats 
+      ansible.builtin.stat:
+        path: "{{user_home}}/latest/bin/startup.sh"       
+        register: tomcat_startup     
     - name: extract tomcat
       ansible.builtin.unarchive:
         src: "https://www-eu.apache.org/dist/tomcat/tomcat-{{tomcat_major_version}}/v{{tomcat_version}}/bin/apache-tomcat-{{tomcat_version}}.tar.gz"
         dest: "{{user_home}}"
         remote_src: yes
+      when: not tomcat_startup.stat.exists 
     - name: Create a symbolic link
       ansible.builtin.file:
         src:  "{{user_home}}/apache-tomcat-{{tomcat_version}}"
@@ -39,4 +44,17 @@
         group: "{{group_name}}"
         state: directory     
     - name: Adding executible permissions to shell files
-      ansible.builtin.command: "sudo sh -c 'chmod +x {{user_home}}/latest/bin/*.sh'"    
+      ansible.builtin.command: "sudo sh -c 'chmod +x {{user_home}}/latest/bin/*.sh'"  
+      when: ansible_facts['distribution'] == "ubuntu" 
+    - name: Creating SystemD Unit File in ubuntu
+      ansible.builtin.copy:
+        src: ubuntu.tomcat.service
+        dest: /etc/systemd/system/tomcat.service_name
+        owner: "{{user_name}}"
+        group: "{{group_name}}"   
+    - name: reload deamon and start tomcat
+      ansible.builtin.systemd:
+        name: "{{tomcat_service_name}}"
+        daemon_reload: yes
+        enabled: yes
+        state: started     
