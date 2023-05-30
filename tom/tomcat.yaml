@@ -28,7 +28,7 @@
         src: "https://www-eu.apache.org/dist/tomcat/tomcat-{{tomcat_major_version}}/v{{tomcat_version}}/bin/apache-tomcat-{{tomcat_version}}.tar.gz"
         dest: "{{user_home}}"
         remote_src: yes
-      when: not tomcat_startup.stat.exists 
+      when: tomcat_startup.stat.exists 
     - name: Create a symbolic link
       ansible.builtin.file:
         src:  "{{user_home}}/apache-tomcat-{{tomcat_version}}"
