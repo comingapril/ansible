@@ -36,8 +36,14 @@
         owner: "{{user_name}}"
         group: "{{group_name}}"
         state: link
+    - name: Change permissions
+      ansible.builtin.file:
+        dest: "{{user_home}}"
+        recurse: yes
+        owner: "{{user_name}}"
+        group: "{{group_name}}"
+        state: directory     
         notify: 
-          - Change permissions
           - Adding executible permissions to shell files
     - name: Creating SystemD Unit File in ubuntu
       ansible.builtin.copy:
@@ -86,10 +92,4 @@
         state: restarted     
     - name: Adding executible permissions to shell files
       ansible.builtin.command: "sudo sh -c 'chmod +x {{user_home}}/latest/bin/*.sh'"  
-    - name: Change permissions
-      ansible.builtin.file:
-        dest: "{{user_home}}"
-        recurse: yes
-        owner: "{{user_name}}"
-        group: "{{group_name}}"
-        state: directory   
+      
