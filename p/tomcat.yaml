@@ -21,3 +21,7 @@
         group: tomcat
         url: https://www-eu.apache.org/dist/tomcat/tomcat-10/v10.1.9/bin/apache-tomcat-10.1.9.tar.gz
         dest: /tmp
+    - name: extract tomcat
+      ansible.builtin.unarchive: 
+        src: /tmp/apache-tomcat-10.1.9.tar.gz
+        dest: /opt/tomcat/
