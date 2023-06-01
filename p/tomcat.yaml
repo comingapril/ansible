@@ -33,3 +33,10 @@
         owner: tomcat
         group: tomcat
         state: link
+    - name: Change the directory ownership
+      ansible.builtin.file:
+        dest: /opt/tomcat
+        state: directory
+        recurse: yes
+        owner: tomcat
+        group: tomcat
