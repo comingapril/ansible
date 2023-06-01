@@ -1,0 +1,10 @@
+---
+- name: Tomcat installation
+  hosts: all
+  become: yes
+  tasks:
+    - name: Installing Java 
+      ansible.builtin.apt:
+        name: openjdk-11-jdk
+        update_cache: yes
+        state: present
