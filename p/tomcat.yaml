@@ -28,7 +28,7 @@
         remote_src: yes
     - name: create a symbolic link
       ansible.builtin.file:
-        src: /opt/tomcat/apache-tomcat-tomcat-10.1.9
+        src: /opt/tomcat/apache-tomcat-10.1.9
         dest: /opt/tomcat/latest
         owner: tomcat
         group: tomcat
