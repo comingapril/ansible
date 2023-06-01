@@ -40,3 +40,5 @@
         recurse: yes
         owner: tomcat
         group: tomcat
+    - name: change permissions
+      ansible.builtin.command: sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
