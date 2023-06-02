@@ -43,3 +43,6 @@
         dest: /etc/systemd/system/tomcat.service
         owner: tomcat
         group: tomcat
+    - name: Enable and start the Tomcat service
+      ansible.builtin.systemd:
+        
