@@ -1,0 +1,9 @@
+---
+- name: Tomcat installation
+  hosts: all
+  become: yes
+  tasks:
+    - name: Installing Java 
+      ansible.builtin.package:
+        name: "{{java_package_name}}"
+        state: present
