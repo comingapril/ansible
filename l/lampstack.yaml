@@ -11,4 +11,4 @@
     - name: copy php
       ansible.builtin.copy:
         src: info.php
-        dest: /var/www/your_domain/info.php
+        dest: /var/www/html/info.php
