@@ -1,0 +1,10 @@
+---
+- name: Installing Apache and Updating the Firewall
+  hosts: all
+  become: yes
+  tasks: 
+    - name: install Apache
+      ansible.builtin.apt:
+        name: apache2
+        update_cache: true
+        state: present
