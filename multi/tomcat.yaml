@@ -1,9 +1,42 @@
 ---
 - name: Tomcat installation
-  hosts: all
+  hosts: appserver
   become: yes
   tasks:
     - name: Installing Java 
       ansible.builtin.package:
         name: "{{java_package_name}}"
         state: present
+        - name: create a group
+      ansible.builtin.group:
+        name: "{{group_name}}"
+        state: present
+    - name: Creating a System User
+      ansible.builtin.user:
+        name: "{{user_name}}"
+        group: "{{group_name}}"
+        create_home: true 
+        home: "{{user_home}}"
+        shell: " {{user_shell}}"
+        state: present
+    - name: extract tomcat
+      ansible.builtin.unarchive: 
+        src: "https://www-eu.apache.org/dist/tomcat/tomcat-{{tomcat_major_version}}/v{{tomcat_version}}/bin/apache-tomcat-{{tomcat_version}}.tar.gz"
+        dest: "{{user_home}}"
+        remote_src: yes
+    - name: create a symbolic link
+      ansible.builtin.file:
+        src: "{{user_home}}/apache-tomcat-{{tomcat_version}}"
+        dest: "{{user_home}}/latest"
+        owner: "{{user_name}}"
+        group: "{{group_name}}"
+        state: link
+    - name: change permissions
+      ansible.builtin.file:
+        dest: "{{user_home}}"
+        state: directory
+        recurse: yes
+        owner: "{{user_name}}"
+        group: "{{group_name}}"
+    - name: add executive permissions to shell files
+      ansible.builtin.command: "sudo sh -c 'chmod +x {{user_home}}/latest/bin/*.sh'"    
