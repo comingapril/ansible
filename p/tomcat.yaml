@@ -59,3 +59,20 @@
         dest: /opt/tomcat/latest/conf/tomcat-users.xml
         owner: tomcat
         group: tomcat
+    - name: create tomcat context xml
+      ansible.builtin.copy:
+        src: context.xml
+        dest: /opt/tomcat/latest/webapps/manager/META-INF/context.xml
+        owner: tomcat
+        group: tomcat
+    - name: create tomcat host manager context xml
+      ansible.builtin.copy:
+        src: host-manager.context.xml
+        dest: /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
+        owner: tomcat
+        group: tomcat    
+    - name: restart tomcat
+      ansible.builtin.systemd:
+        name: tomcat.service
+        daemon_reload: true
+        state: restarted
