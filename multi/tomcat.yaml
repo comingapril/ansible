@@ -55,12 +55,6 @@
       when: ansible_facts['distribution'] == "Ubuntu"  
       notify:
         - enable and reload tomcat
-    - name: reload daemon and start Tomcat 
-      ansible.builtin.systemd:
-        name: "{{tomcat_service_name}}"
-        daemon_reload: true
-        enabled: true
-        state: started  
     - name: create tomcat users xml
       ansible.builtin.copy:
         src: tomcat-users.xml
@@ -81,6 +75,10 @@
         group: "{{group_name}}"    
       notify: 
         - restart tomcat
+    - name: ensure Tomcat is running
+      ansible.builtin.systemd:
+        name: "{{tomcat_service_name}}"
+        state: started      
   handlers:
     - name: restart tomcat
       ansible.builtin.systemd:
