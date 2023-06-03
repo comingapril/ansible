@@ -27,7 +27,7 @@
         group: "{{group_name}}"
         create_home: true 
         home: "{{user_home}}"
-        shell: " {{user_shell}}"
+        shell: "{{user_shell}}"
         state: present
     - name: extract tomcat
       ansible.builtin.unarchive: 
