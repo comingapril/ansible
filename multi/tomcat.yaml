@@ -53,6 +53,8 @@
         owner: "{{user_name}}"
         group: "{{group_name}}"  
       when: ansible_facts['distribution'] == "Ubuntu"  
+      notify:
+        - enable and reload tomcat
     - name: reload daemon and start Tomcat 
       ansible.builtin.systemd:
         name: "{{tomcat_service_name}}"
@@ -77,8 +79,14 @@
         dest: "{{user_home}}/latest/webapps/host-manager/META-INF/context.xml"
         owner: "{{user_name}}"
         group: "{{group_name}}"    
+      notify: 
+        - restart tomcat
+  handlers:
     - name: restart tomcat
       ansible.builtin.systemd:
         name: "{{tomcat_service_name}}"
         state: restarted
-    
+    - name: enable and reload tomcat
+      ansible.builtin.systemd:
+        name: "{{tomcat_service_name}}"
+        state: restarted    
