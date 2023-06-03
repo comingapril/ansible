@@ -36,16 +36,9 @@
         owner: "{{user_name}}"
         group: "{{group_name}}"
         state: link
-    - name: change permissions
-      ansible.builtin.file:
-        dest: "{{user_home}}"
-        state: directory
-        recurse: yes
-        owner: "{{user_name}}"
-        group: "{{group_name}}"
-    - name: add executive permissions to shell files
-      ansible.builtin.command: "sudo sh -c 'chmod +x {{user_home}}/latest/bin/*.sh'" 
-      when: not tomcat_startup.stat.exists    
+      notify:
+        - change permissions
+        - add executive permissions to shell files
     - name: Creating SystemD Unit File in ubuntu
       ansible.builtin.copy:
         src: ubuntu.tomcat.service
@@ -61,12 +54,16 @@
         dest: "{{user_home}}/latest/conf/tomcat-users.xml"
         owner: "{{user_name}}"
         group: "{{group_name}}"
+      notify: 
+        - restart tomcat  
     - name: create tomcat context xml
       ansible.builtin.copy:
         src: context.xml
         dest: "{{user_home}}/latest/webapps/manager/META-INF/context.xml"
         owner: "{{user_name}}"
         group: "{{group_name}}"
+      notify: 
+        - restart tomcat  
     - name: create tomcat host manager context xml
       ansible.builtin.copy:
         src: host-manager.context.xml
@@ -88,3 +85,12 @@
       ansible.builtin.systemd:
         name: "{{tomcat_service_name}}"
         state: restarted    
+    - name: add executive permissions to shell files
+      ansible.builtin.command: "sudo sh -c 'chmod +x {{user_home}}/latest/bin/*.sh'" 
+    - name: change permissions
+      ansible.builtin.file:
+        dest: "{{user_home}}"
+        state: directory
+        recurse: yes
+        owner: "{{user_name}}"
+        group: "{{group_name}}"          
