@@ -4,9 +4,9 @@
   tasks:
     - name: install utility
       ansible.builtin.package:
-       name: "{{ item }}"
+       name: "{{item}}"
        state: present
-       loop: "{{ packages }}"
+       loop: "{{packages}}"
     - name: debug variable
       ansible.builtin.debug:
         var: purpose     
