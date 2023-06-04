@@ -5,6 +5,7 @@
     - name: install utility
       ansible.builtin.package:
        name: "{{item}}"
+       become: yes
        state: present
        loop: "{{packages}}"
     - name: debug variable
