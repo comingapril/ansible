@@ -1,4 +1,4 @@
-[appserver:vars]
+---
 user_name: tomcat
 group_name: tomcat
 user_home: /opt/tomcat
