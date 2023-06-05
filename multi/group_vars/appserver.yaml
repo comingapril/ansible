@@ -8,3 +8,5 @@ tomcat_major_version: "10"
 tomcat_service_name: tomcat.service
 tomcat_mgmt_name: admin
 tomcat_mgmt_password: admin123
+tomcat_java_home: /usr/lib/jvm/java-11-openjdk-amd64
+tomcat_java_opts: -Djava.security.egd=file:///dev/urandom -Djava.awt.headless=true
