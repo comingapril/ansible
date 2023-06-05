@@ -37,7 +37,6 @@
         group: "{{group_name}}"
         state: link
       notify:
-        - change permissions
         - add executive permissions to shell files
     - name: Creating SystemD Unit File in ubuntu
       ansible.builtin.copy:
@@ -56,6 +55,15 @@
         group: "{{group_name}}"
       notify: 
         - restart tomcat  
+    - name: change permissions
+      ansible.builtin.file:
+        dest: "{{user_home}}"
+        state: directory
+        recurse: yes
+        owner: "{{user_name}}"
+        group: "{{group_name}}"    
+      notify: 
+        - restart tomcat              
     - name: copy the context xml
       ansible.builtin.copy:
         src: context.xml
@@ -82,10 +90,4 @@
         state: restarted    
     - name: add executive permissions to shell files
       ansible.builtin.command: "sudo sh -c 'chmod +x {{user_home}}/latest/bin/*.sh'" 
-    - name: change permissions
-      ansible.builtin.file:
-        dest: "{{user_home}}"
-        state: directory
-        recurse: yes
-        owner: "{{user_name}}"
-        group: "{{group_name}}"          
+    
