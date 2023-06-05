@@ -1,13 +1,3 @@
 [appserver]
-172.31.30.161  java_package_name=openjdk-11-jdk
+172.31.30.161  
 
-[appserver:vars]
-user_name=tomcat
-group_name=tomcat
-user_home=/opt/tomcat
-user_shell=/bin/false
-tomcat_version="10.1.9"
-tomcat_major_version="10"
-tomcat_service_name=tomcat.service
-tomcat_mgmt_name=admin
-tomcat_mgmt_password=admin123
